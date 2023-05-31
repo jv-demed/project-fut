@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { getTableAsc } from '../src/services/supabaseService';
-import { Box } from '../src/components/globals/Box';
 import { Player } from '../src/components/fut/Player';
 import { Starter } from '../src/components/fut/Starter';
+import { MainBox } from '../src/components/boxes/MainBox';
 import { AddPlayer } from '../src/components/buttons/AddPlayer';
+import { InfoHeader } from '../src/components/headers/InfoHeader';
 
 const HomeStyled = styled.main`
-    header{
-        border-bottom: 1px solid gray;
-        padding-bottom: 4px;
-        text-align: center;
-    }
     .teams{
         gap: 5px;
         .team{
@@ -26,7 +22,7 @@ const HomeStyled = styled.main`
         border: 1px solid gray;
     }
     .players{
-        gap: 2px;
+        gap: 5px;
     }
 `
 
@@ -37,74 +33,99 @@ export default function Home({ data }){
     const [teamB, setTeamB] = useState([]);
     const [selected, setSelected] = useState(null);
 
+    console.log(selected);
+
+    function addPlayer(team, setTeam){
+        if(selected){
+            setTeam([...team, selected])
+            setPlayers(players.filter(p => p.id != selected.id));
+            setSelected(null);
+        }
+    }
+
+    function replacement(player){
+        if(!selected || players.some(p => p.id === player.id)){
+            setSelected(player);
+        }else{
+            console.log(player);
+        }
+    }
+
     return(
         <HomeStyled>
-            <Box>
-                <header>
-                    <span>FUT 5</span>
-                </header>
-                <div className='teams flexRow'>
-                    <div className='team flexColumn'>
-                        {!teamA.length == 0 ?
-                            <ul className='flexColumn'>
-                                {teamA.map(player => {
-                                    return(
-                                        <Starter 
-                                            key={player.id}
-                                            player={player} 
-                                        />
-                                    )
-                                })}
-                            </ul> : ''
-                        }
-                        <AddPlayer
-                            selected={selected}
-                            setSelected={setSelected}
-                            team={teamA}
-                            setTeam={setTeamA}
-                            players={players}
-                            setPlayers={setPlayers}
-                        />
-                    </div>
-                    <div className='team flexColumn'>
-                        {!teamB.length == 0 ?
-                            <ul className='flexColumn'>
-                                {teamB.map(player => {
-                                    return(
-                                        <Starter 
-                                            key={player.id}
-                                            player={player} 
-                                        />
-                                    )
-                                })}
-                            </ul> : ''
-                        }
-                        <AddPlayer 
-                            selected={selected}
-                            setSelected={setSelected}
-                            team={teamB}
-                            setTeam={setTeamB}
-                            players={players}
-                            setPlayers={setPlayers}
-                        />
-                    </div>
-                </div>
-                <div className='bench'>
-                    <span>Banco</span>
-                </div>
-                <ul className='players flexColumn'>
-                    {players.map(player => {
-                        return(
-                            <Player
-                                key={player.id}
-                                player={player}
-                                selected={selected}
-                                setSelected={setSelected}
+            <MainBox>
+                <section>
+                    <InfoHeader>
+                        <span>EM CAMPO</span>
+                    </InfoHeader>
+                    <div className='teams flexRow'>
+                        <div className='team flexColumn'>
+                            {!teamA.length == 0 ?
+                                <ul className='flexColumn'>
+                                    {teamA.map(player => {
+                                        return(
+                                            <Starter 
+                                                key={player.id}
+                                                player={player} 
+                                                selected={selected}
+                                                replacement={replacement}
+                                            />
+                                        )
+                                    })}
+                                </ul> : ''
+                            }
+                            <AddPlayer
+                                addPlayer={addPlayer}
+                                team={teamA}
+                                setTeam={setTeamA}
                             />
-                        )
-                    })}
-                </ul>
-            </Box>
+                        </div>
+                        <div className='team flexColumn'>
+                            {!teamB.length == 0 ?
+                                <ul className='flexColumn'>
+                                    {teamB.map(player => {
+                                        return(
+                                            <Starter 
+                                                key={player.id}
+                                                player={player} 
+                                                selected={selected}
+                                                replacement={replacement}
+                                            />
+                                        )
+                                    })}
+                                </ul> : ''
+                            }
+                            <AddPlayer 
+                                addPlayer={addPlayer}
+                                team={teamB}
+                                setTeam={setTeamB}
+                            />
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <InfoHeader>
+                        <span>BANCO</span>
+                    </InfoHeader>
+                </section>
+                <section>
+                    <InfoHeader>
+                        <span>JOGADORES</span>
+                    </InfoHeader>     
+                    <ul className='players flexColumn'>
+                        {players.map(player => {
+                            return(
+                                <Player
+                                    key={player.id}
+                                    player={player}
+                                    selected={selected}
+                                    replacement={replacement}
+                                />
+                            )
+                        })}
+                    </ul>
+                </section>
+            </MainBox>
         </HomeStyled>
     )
 }

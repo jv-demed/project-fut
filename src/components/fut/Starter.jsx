@@ -1,27 +1,17 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { PlayerBox } from '../boxes/PlayerBox';
 
-const StarterStyled = styled.div`
-    align-items: center;
+const StarterStyled = styled(PlayerBox)`
     border: ${props => props.selected ? '2px white' : '1px gray'} solid;
-    background-color: #545668;
-    border-radius: 2px;
-    display: flex;
-    height: 35px;
-    padding: 0 5px;
+    justify-content: center;
 `
 
-export function Starter({ player, selected, setSelected }){
+export function Starter({ player, selected, replacement }){
     return(
         <StarterStyled 
-            // selected={selected == player ? true : false}
-            // onClick={() => {
-            //     if(!selected){
-            //         setSelected(player)
-            //     }else{
-            //         console.log('oi')
-            //     }
-            // }}
+            selected={selected == player ? true : false}
+            onClick={() => replacement(player)}
         >
             {player.nick}
         </StarterStyled>

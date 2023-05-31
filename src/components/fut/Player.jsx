@@ -1,22 +1,18 @@
 import styled from 'styled-components';
+import { PlayerBox } from '../boxes/PlayerBox';
 
-const PlayerStyled = styled.div`
-    align-items: center;
+const PlayerStyled = styled(PlayerBox)`
     border: ${props => props.selected ? '2px white' : '1px gray'} solid;
-    background-color: #545668;
-    border-radius: 2px;
-    display: flex;
-    height: 35px;
-    padding: 0 5px;
+    justify-content: center;
 `
 
-export function Player({ player, selected, setSelected }){
+export function Player({ player, selected, replacement }){
     return(
         <PlayerStyled 
             selected={selected == player ? true : false}
-            onClick={() => setSelected(player)}
+            onClick={() => replacement(player)}
         >
-            {player.nick}
+            <span>{player.nick}</span>
         </PlayerStyled>
     )
 }

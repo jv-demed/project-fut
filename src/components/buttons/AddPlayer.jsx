@@ -4,25 +4,14 @@ const AddPlayerStyled = styled.div`
     align-items: center;
     border: 1px gray solid;
     border-radius: 2px;
-    cursor: pointer;
     display: flex;
-    height: 35px;
+    height: 50px;
     justify-content: center;
-    transition: all 0.2s;
-    :hover{
-        background-color: #545668;
-    }
 `
 
-export function AddPlayer({ selected, setSelected, team, setTeam, players, setPlayers }){
+export function AddPlayer({ addPlayer, team, setTeam }){
     return(
-        <AddPlayerStyled onClick={() => {
-            if(selected){
-                setTeam([...team, selected])
-                setPlayers(players.filter(p => p.id != selected.id));
-                setSelected(null);
-            }
-        }}>
+        <AddPlayerStyled onClick={() => addPlayer(team, setTeam)}>
             Add
         </AddPlayerStyled>
     )
