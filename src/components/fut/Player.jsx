@@ -10,7 +10,7 @@ export function Player({ player, selected, replacement }){
     return(
         <PlayerStyled 
             selected={selected == player ? true : false}
-            onClick={() => replacement(player)}
+            onClick={replacement}
         >
             <span>{player.nick}</span>
         </PlayerStyled>

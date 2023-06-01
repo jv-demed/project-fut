@@ -6,6 +6,7 @@ import { Starter } from '../src/components/fut/Starter';
 import { MainBox } from '../src/components/boxes/MainBox';
 import { AddPlayer } from '../src/components/buttons/AddPlayer';
 import { InfoHeader } from '../src/components/headers/InfoHeader';
+import { existsPlayer, addPlayerAnotherTeam, addPlayerFromPlayers, removePlayer, addPlayer } from '../src/scripts/replacementScripts';
 
 const HomeStyled = styled.main`
     .teams{
@@ -23,6 +24,10 @@ const HomeStyled = styled.main`
     }
     .players{
         gap: 5px;
+        span{
+            padding-top: 8px;
+            text-align: center;
+        }
     }
 `
 
@@ -33,21 +38,30 @@ export default function Home({ data }){
     const [teamB, setTeamB] = useState([]);
     const [selected, setSelected] = useState(null);
 
-    console.log(selected);
-
-    function addPlayer(team, setTeam){
-        if(selected){
-            setTeam([...team, selected])
-            setPlayers(players.filter(p => p.id != selected.id));
-            setSelected(null);
-        }
-    }
-
-    function replacement(player){
-        if(!selected || players.some(p => p.id === player.id)){
+    function replacement(player, team, setTeam, otherTeam, setOtherTeam){
+        if(!selected || existsPlayer(players, selected)){
             setSelected(player);
         }else{
-            console.log(player);
+            if(existsPlayer(team, selected)){
+                const newList = [...team];
+                const i1 = newList.findIndex(p => p.id === selected.id);
+                const i2 = newList.findIndex(p => p.id === player.id);
+                const aux = newList[i1];
+                newList[i1] = newList[i2];
+                newList[i2] = aux;
+                setTeam(newList);
+            }else if(existsPlayer(otherTeam, selected)){
+                const newTeam = [...team];
+                const newOtherTeam = [...otherTeam];
+                const i1 = newTeam.findIndex(p => p.id === player.id);
+                const i2 = newOtherTeam.findIndex(p => p.id === selected.id);
+                const aux = newTeam[i1];
+                newTeam[i1] = newOtherTeam[i2];
+                newOtherTeam[i2] = aux;
+                setTeam(newTeam);
+                setOtherTeam(newOtherTeam);
+            }
+            setSelected(null);
         }
     }
 
@@ -68,16 +82,25 @@ export default function Home({ data }){
                                                 key={player.id}
                                                 player={player} 
                                                 selected={selected}
-                                                replacement={replacement}
+                                                replacement={() => replacement(player, teamA, setTeamA, teamB, setTeamB)}
                                             />
                                         )
                                     })}
                                 </ul> : ''
                             }
                             <AddPlayer
-                                addPlayer={addPlayer}
-                                team={teamA}
-                                setTeam={setTeamA}
+                                addPlayer={() => {
+                                    if(!selected) return;
+                                    if(existsPlayer(teamB, selected)){
+                                        setTeamB(removePlayer(teamB, selected));
+                                        setTeamA(addPlayer(teamA, selected));
+                                    }
+                                    if(!existsPlayer(teamA, selected)){
+                                        setPlayers(removePlayer(players, selected));
+                                        setTeamA(addPlayer(teamA, selected));
+                                    }
+                                    setSelected(null);
+                                }}
                             />
                         </div>
                         <div className='team flexColumn'>
@@ -89,16 +112,25 @@ export default function Home({ data }){
                                                 key={player.id}
                                                 player={player} 
                                                 selected={selected}
-                                                replacement={replacement}
+                                                replacement={() => replacement(player, teamB, setTeamB, teamA, setTeamA)}
                                             />
                                         )
                                     })}
                                 </ul> : ''
                             }
                             <AddPlayer 
-                                addPlayer={addPlayer}
-                                team={teamB}
-                                setTeam={setTeamB}
+                                addPlayer={() => {
+                                    if(!selected) return;
+                                    if(existsPlayer(teamA, selected)){
+                                        setTeamA(removePlayer(teamA, selected));
+                                        setTeamB(addPlayer(teamB, selected));
+                                    }
+                                    if(!existsPlayer(teamB, selected)){
+                                        setPlayers(removePlayer(players, selected));
+                                        setTeamB(addPlayer(teamB, selected));
+                                    }
+                                    setSelected(null);
+                                }}
                             />
                         </div>
                     </div>
@@ -113,16 +145,19 @@ export default function Home({ data }){
                         <span>JOGADORES</span>
                     </InfoHeader>     
                     <ul className='players flexColumn'>
-                        {players.map(player => {
-                            return(
-                                <Player
-                                    key={player.id}
-                                    player={player}
-                                    selected={selected}
-                                    replacement={replacement}
-                                />
-                            )
-                        })}
+                        {players.length != 0 ?
+                            players.map(player => {
+                                return(
+                                    <Player
+                                        key={player.id}
+                                        player={player}
+                                        selected={selected}
+                                        replacement={() => replacement(player, players)}
+                                    />
+                                )
+                            }) :
+                            <span>Não há jogadores</span>
+                        }
                     </ul>
                 </section>
             </MainBox>
@@ -131,7 +166,7 @@ export default function Home({ data }){
 }
 
 export async function getServerSideProps(){
-    const players = await getTableAsc('players', '*', 'nick');
+    const players = await getTableAsc('projectFut-players', '*', 'nick');
     return {
         props: {
             data: players
