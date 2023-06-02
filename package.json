@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
     "@supabase/supabase-js": "^2.23.0",
     "next": "^13.4.4",
     "react": "^18.2.0",

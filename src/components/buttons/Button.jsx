@@ -6,11 +6,15 @@ export const Button = styled.button`
     border: none;
     border-radius: 2px;
     cursor: pointer;
+    gap: 5px;
     display: flex;
     flex-grow: 1;
     height: 50px;
     justify-content: center;
     .icon{
         font-size: 1.6rem;
+    }
+    :disabled{
+        background-color: gray;
     }
 `

@@ -29,10 +29,11 @@ export function TeamList({
         <TeamListStyled>
             {!team.length == 0 ?
                 <ul className='flexColumn'>
-                    {team.map(player => {
+                    {team.map((player, i) => {
                         return(
                             <Starter 
-                                key={player.id}
+                                i={i}
+                                key={player.id ? player.id : player}
                                 player={player} 
                                 selected={selected}
                                 replacement={() => {

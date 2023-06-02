@@ -42,7 +42,7 @@ export function BenchList({
                 {bench.map(player => {
                     return(
                         <Bench
-                            key={player.id}
+                            key={player.id ? player.id : player}
                             player={player}
                             selected={selected}
                             replacement={() => {

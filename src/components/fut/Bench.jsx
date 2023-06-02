@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { getRecordById } from '../../services/supabaseService';
 import { PlayerBox } from '../boxes/PlayerBox';
 
 const BenchStyled = styled(PlayerBox)`
@@ -9,12 +11,22 @@ const BenchStyled = styled(PlayerBox)`
 `
 
 export function Bench({ player, selected, replacement }){
+
+    const [bench, setBench] = useState(player);
+
+    useEffect(() => {
+        if(!bench.nick){
+            getRecordById('projectFut-players', '*', player)
+            .then(res => setBench(res));
+        }
+    }, []);
+
     return(
         <BenchStyled 
             selected={selected == player ? true : false}
             onClick={replacement}
         >
-            {player.nick}
+            {bench.nick}
         </BenchStyled>
     )
 }

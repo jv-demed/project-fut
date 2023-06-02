@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { getTableAsc } from '../src/services/supabaseService';
+import { useRouter } from 'next/router';
+import { generateId, getTableAsc } from '../src/services/supabaseService';
+import { GiWhistle } from 'react-icons/gi';
 import { MainBox } from '../src/components/boxes/MainBox';
 import { PlayerList } from '../src/components/lists/PlayerList';
 import { GameSection } from '../src/components/sections/GameSection';
 import { BenchList } from '../src/components/lists/BenchList';
+import { Button } from '../src/components/buttons/Button';
+import { createMatch } from '../src/data/inMatchData';
 
 export default function Home({ data }){
+
+    const router = useRouter();
 
     const [players, setPlayers] = useState(data);
     const [teamA, setTeamA] = useState([]);
@@ -16,6 +22,17 @@ export default function Home({ data }){
     return(
         <main>
             <MainBox>
+                <Button
+                    disabled={teamA.length === 0 || teamB.length === 0 ? true : false}
+                    onClick={async () => {
+                        const id = await generateId('projectFut-matches');
+                        await createMatch(id, teamA, teamB, bench)
+                        .then(() => router.push(`/match/${id}`));
+                    }}
+                >
+                    APITO INICIAL
+                    <GiWhistle className='icon' />
+                </Button>
                 <GameSection 
                     selected={selected}
                     setSelected={setSelected}
