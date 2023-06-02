@@ -12,3 +12,11 @@ export async function getTableAsc(table, select, order){
         console.log(res.error);
     }return res.data;
 }
+
+export async function insertRecord(table, obj){
+    const { status, error } = await supabase.from(table)
+    .insert(obj);
+    if(status != 201){
+        console.log(error);
+    }
+}

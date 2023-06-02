@@ -15,8 +15,13 @@ main{
 .flexRow{
     display: flex;
 }
-
 .flexColumn{
     display: flex;
     flex-direction: column;
+}
+.alignCenter{
+    align-items: center;
+}
+.between{
+    justify-content: space-between;
 }
