@@ -18,6 +18,8 @@ export function GameSection({
     setTeamA,
     teamB,
     setTeamB,
+    bench,
+    setBench,
     players,
     setPlayers
 }){
@@ -34,6 +36,8 @@ export function GameSection({
                     setTeam={setTeamA}
                     otherTeam={teamB}
                     setOtherTeam={setTeamB}
+                    bench={bench}
+                    setBench={setBench}
                     players={players}
                     setPlayers={setPlayers}
                 />
@@ -44,6 +48,8 @@ export function GameSection({
                     setTeam={setTeamB}
                     otherTeam={teamA}
                     setOtherTeam={setTeamA}
+                    bench={bench}
+                    setBench={setBench}
                     players={players}
                     setPlayers={setPlayers}
                 />

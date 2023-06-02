@@ -20,6 +20,8 @@ export function TeamList({
     setTeam,
     otherTeam,
     setOtherTeam,
+    bench,
+    setBench,
     players,
     setPlayers
 }){
@@ -43,6 +45,10 @@ export function TeamList({
                                             const teams = replacementOther(team, otherTeam, selected, player);
                                             setTeam(teams[0]);
                                             setOtherTeam(teams[1]);
+                                        }else if(existsPlayer(bench, selected)){
+                                            const teams = replacementOther(team, bench, selected, player);
+                                            setTeam(teams[0]);
+                                            setBench(teams[1]);
                                         }
                                         setSelected(null);
                                     }
@@ -57,6 +63,10 @@ export function TeamList({
                     if(!selected) return;
                     if(existsPlayer(otherTeam, selected)){
                         setOtherTeam(removePlayer(otherTeam, selected));
+                        setTeam(addPlayer(team, selected));
+                    }
+                    if(existsPlayer(bench, selected)){
+                        setBench(removePlayer(bench, selected));
                         setTeam(addPlayer(team, selected));
                     }
                     if(!existsPlayer(team, selected)){

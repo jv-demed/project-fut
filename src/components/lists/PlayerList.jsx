@@ -25,7 +25,9 @@ export function PlayerList({
     teamA,
     setTeamA,
     teamB,
-    setTeamB 
+    setTeamB,
+    bench,
+    setBench
 }){
     return(
         <PlayerListStyled>
@@ -48,10 +50,14 @@ export function PlayerList({
                                             const teams = replacementOther(players, teamA, selected, player);
                                             setPlayers(teams[0]);
                                             setTeamA(teams[1]);
-                                        }else if(existsPlayer(teamB, selected)){
+                                        }if(existsPlayer(teamB, selected)){
                                             const teams = replacementOther(players, teamB, selected, player);
                                             setPlayers(teams[0]);
                                             setTeamB(teams[1]);
+                                        }if(existsPlayer(bench, selected)){
+                                            const teams = replacementOther(players, bench, selected, player);
+                                            setPlayers(teams[0]);
+                                            setBench(teams[1]);
                                         }
                                         setSelected(null);
                                     }
