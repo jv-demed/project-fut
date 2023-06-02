@@ -14,33 +14,35 @@ export default function Home({ data }){
     const [selected, setSelected] = useState(null);
 
     return(
-        <MainBox>
-            <GameSection 
-                selected={selected}
-                setSelected={setSelected}
-                teamA={teamA}
-                setTeamA={setTeamA}
-                teamB={teamB}
-                setTeamB={setTeamB}
-                players={players}
-                setPlayers={setPlayers}
-            />
-            <section>
-                <InfoHeader>
-                    <span>BANCO</span>
-                </InfoHeader>
-            </section>
-            <PlayerList 
-                players={players} 
-                setPlayers={setPlayers}
-                selected={selected} 
-                setSelected={setSelected}
-                teamA={teamA}
-                setTeamA={setTeamA}
-                teamB={teamB}
-                setTeamB={setTeamB}                
-            />
-        </MainBox>
+        <main>
+            <MainBox>
+                <GameSection 
+                    selected={selected}
+                    setSelected={setSelected}
+                    teamA={teamA}
+                    setTeamA={setTeamA}
+                    teamB={teamB}
+                    setTeamB={setTeamB}
+                    players={players}
+                    setPlayers={setPlayers}
+                />
+                <section>
+                    <InfoHeader>
+                        <span>BANCO</span>
+                    </InfoHeader>
+                </section>
+                <PlayerList 
+                    players={players} 
+                    setPlayers={setPlayers}
+                    selected={selected} 
+                    setSelected={setSelected}
+                    teamA={teamA}
+                    setTeamA={setTeamA}
+                    teamB={teamB}
+                    setTeamB={setTeamB}                
+                />
+            </MainBox>
+        </main>
     )
 }
 
