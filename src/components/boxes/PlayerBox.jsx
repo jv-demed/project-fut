@@ -85,6 +85,11 @@ export function PlayerBox({ p }){
                         player={player}
                         setPlayer={setPlayer}
                     />
+                    <StatInput legend='Gols Contra'
+                        stat='ownGoals'
+                        player={player}
+                        setPlayer={setPlayer}
+                    />
                 </Disclosure.Panel>
             </Disclosure>
         </PlayerBoxStyled>
