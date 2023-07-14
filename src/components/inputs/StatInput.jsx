@@ -4,7 +4,7 @@ import { IoRemoveOutline, IoAdd } from 'react-icons/io5';
 const StatInputStyled = styled.div`
     align-items: center;
     display: flex;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     justify-content: space-between;
     padding: 5px 0;
     div{
@@ -13,7 +13,7 @@ const StatInputStyled = styled.div`
         gap: 10px;
     }
     .icon{
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
 `
 

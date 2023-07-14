@@ -11,7 +11,7 @@ const PlayerBoxStyled = styled.div`
         border: none;
         border-radius: 2px;
         display: flex;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         height: 60px;
         justify-content: space-between;
         padding: 0 15px;
