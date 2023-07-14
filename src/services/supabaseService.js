@@ -21,10 +21,28 @@ export async function getRecordById(table, select, id){
     }return res.data[0];
 }
 
+export async function getRecordByFilter(table, select, where, value){
+    const res = await supabase.from(table).select(select)
+    .eq(where, value);
+    if(res.status != 200){
+        console.log(res.error);
+    }return res.data;
+}
+
 export async function insertRecord(table, obj){
     const { status, error } = await supabase.from(table)
     .insert(obj);
     if(status != 201){
+        console.log(error);
+    }
+}
+
+export async function updateRecord(table, obj, where, value){
+    const { status, error } = await supabase.from(table).update({
+        ...obj
+    })
+    .eq(where, value);
+    if(status != 204){
         console.log(error);
     }
 }
